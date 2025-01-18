@@ -1,6 +1,6 @@
 name: mudblazor-ci
 
-on:
+'on':
   push:
     branches: [ dev ]
   pull_request:
@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
-    - name: Install and build all templates
-      shell: pwsh
-      run: |
-        ./InstallAndBuildAllTemplates.ps1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
+      - name: Install and build all templates
+        shell: pwsh
+        run: |
+          ./InstallAndBuildAllTemplates.ps1

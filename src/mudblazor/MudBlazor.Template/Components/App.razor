@@ -6,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />  
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />  
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <ImportMap />
     @*#if (SampleContent)
     <link rel="icon" type="image/ico" href="favicon.ico" />
     ##endif*@
     @*#if (!InteractiveAtRoot)
     <HeadOutlet />
     ##elseif (IndividualLocalAuth)
-    <HeadOutlet @rendermode="RenderModeForPage" />
+    <HeadOutlet @rendermode="PageRenderMode" />
     ##elseif (UseServer && UseWebAssembly)
     <HeadOutlet @rendermode="InteractiveAuto" />
     ##elseif (UseServer)
@@ -27,7 +28,7 @@
     @*#if (!InteractiveAtRoot)
     <Routes />
     ##elseif (IndividualLocalAuth)
-    <Routes @rendermode="RenderModeForPage" />
+    <Routes @rendermode="PageRenderMode" />
     ##elseif (UseServer && UseWebAssembly)
     <Routes @rendermode="InteractiveAuto" />
     ##elseif (UseServer)
@@ -50,9 +51,8 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
-        ? null
-        : InteractiveAuto;
+    private IComponentRenderMode? PageRenderMode =>
+        HttpContext.AcceptsInteractiveRouting() ? InteractiveAuto : null;
 }
 #elseif (UseServer)
 
@@ -60,9 +60,8 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
-        ? null
-        : InteractiveServer;
+    private IComponentRenderMode? PageRenderMode =>
+        HttpContext.AcceptsInteractiveRouting() ? InteractiveServer : null;
 }
 #else
 
@@ -70,8 +69,7 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
-        ? null
-        : InteractiveWebAssembly;
+    private IComponentRenderMode? PageRenderMode =>
+        HttpContext.AcceptsInteractiveRouting() ? InteractiveWebAssembly : null;
 }
 #endif*@
