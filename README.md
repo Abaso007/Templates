@@ -11,7 +11,7 @@ We're excited to announce the availability of a new template for .NET 8 Web Apps
 
 ## Prerequisites
 
-- .NET 8 SDK
+- .NET 9 SDK
 - Visual Studio 2022, JetBrains Rider or Visual Studio Code 
 
 ## Getting Started
